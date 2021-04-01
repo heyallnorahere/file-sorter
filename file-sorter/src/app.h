@@ -9,7 +9,6 @@ namespace file_sorter {
 		int loop();
 	private:
 		platform::window_t m_window;
-		std::map<std::string, std::shared_ptr<group>> m_groups;
 		platform::control_t m_sort_button, m_path_input, m_path_select;
 		void add_controls();
 		void sort();

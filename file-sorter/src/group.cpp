@@ -10,9 +10,11 @@ namespace file_sorter {
 		for (auto& f : this->m_files) {
 			std::string path = f->get_path();
 			size_t pos = path.find_last_of('/');
+#ifdef SYSTEM_WINDOWS
 			if (pos == std::string::npos) {
 				pos = path.find_last_of('\\');
 			}
+#endif
 			std::string local_name;
 			if (pos == std::string::npos) {
 				local_name = path;

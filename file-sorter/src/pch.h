@@ -10,3 +10,10 @@
 #include <algorithm>
 #include <cassert>
 #include <memory>
+#ifdef SYSTEM_LINUX
+#include <experimental/filesystem>
+namespace fs = std::expiremental::filesystem;
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif

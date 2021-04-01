@@ -8,6 +8,6 @@ namespace file_sorter {
 		~file();
 	private:
 		std::string m_path;
-		std::fstream m;
+		std::ifstream m_in;
 	};
 }

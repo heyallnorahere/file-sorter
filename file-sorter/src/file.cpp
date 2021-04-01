@@ -2,21 +2,22 @@
 #include "file.h"
 namespace file_sorter {
 	file::file(const std::string& path) {
-		this->m = std::fstream(path, std::ios::binary);
+		this->m_in = std::ifstream(path, std::ios::binary);
 		this->m_path = path;
 	}
 	void* file::read(size_t& size) {
-		this->m.seekg(0, this->m.end);
-		size = this->m.tellg();
-		this->m.seekg(0, this->m.beg);
+		this->m_in.seekg(0, this->m_in.end);
+		size = this->m_in.tellg();
+		this->m_in.seekg(0, this->m_in.beg);
 		void* buffer = malloc(size);
-		this->m.read((char*)buffer, size);
+		assert(buffer);
+		this->m_in.read((char*)buffer, size);
 		return buffer;
 	}
 	std::string file::get_path() {
 		return this->m_path;
 	}
 	file::~file() {
-		this->m.close();
+		this->m_in.close();
 	}
 }
