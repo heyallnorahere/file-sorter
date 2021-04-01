@@ -2,14 +2,23 @@
 #include <Windows.h>
 #include "../window.h"
 #include "windows_window.h"
+#include "../control.h"
+#include "button_callback.h"
 extern "C" IMAGE_DOS_HEADER __ImageBase;
 namespace file_sorter {
 	namespace platform {
+		extern std::vector<callback_struct> callbacks;
 		namespace windows {
 			LRESULT wndproc(HWND window, uint32_t message, WPARAM wparam, LPARAM lparam) {
 				switch (message) {
 				case WM_DESTROY:
 					PostQuitMessage(0);
+					break;
+				case WM_COMMAND:
+				{
+					auto cb = callbacks[(size_t)wparam];
+					cb.callback(cb.window, cb.control);
+				}
 					break;
 				default:
 					return DefWindowProcA(window, message, wparam, lparam);
@@ -33,7 +42,7 @@ namespace file_sorter {
 		}
 		window_t create_window(const std::string& title, size_t width, size_t height) {
 			windows_window* w = new windows_window;
-			w->window = CreateWindowA(class_name.c_str(), title.c_str(), WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, (HINSTANCE)&__ImageBase, NULL);
+			w->window = CreateWindowA(class_name.c_str(), title.c_str(), WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, NULL, NULL);
 			return w;
 		}
 		void destroy_window(window_t window) {
