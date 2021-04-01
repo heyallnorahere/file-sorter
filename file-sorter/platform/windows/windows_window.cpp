@@ -1,9 +1,8 @@
 #include "pch.h"
 #include <Windows.h>
 #include "../window.h"
-#include "windows_window.h"
 #include "../control.h"
-#include "button_callback.h"
+#include "internal.h"
 extern "C" IMAGE_DOS_HEADER __ImageBase;
 namespace file_sorter {
 	namespace platform {
@@ -41,14 +40,13 @@ namespace file_sorter {
 			assert(RegisterClassA(&wc));
 		}
 		window_t create_window(const std::string& title, size_t width, size_t height) {
-			windows_window* w = new windows_window;
+			window_t w = new _window_t;
 			w->window = CreateWindowA(class_name.c_str(), title.c_str(), WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, NULL, NULL);
 			return w;
 		}
 		void destroy_window(window_t window) {
-			windows_window* w = (windows_window*)window;
-			DestroyWindow(w->window);
-			delete w;
+			DestroyWindow(window->window);
+			delete window;
 		}
 		int loop() {
 			MSG msg;
