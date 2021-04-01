@@ -15,8 +15,10 @@ namespace file_sorter {
 					break;
 				case WM_COMMAND:
 				{
-					auto cb = callbacks[(size_t)wparam];
-					cb.callback(cb.window, cb.control);
+					if ((size_t)wparam < callbacks.size()) {
+						auto cb = callbacks[(size_t)wparam];
+						cb.callback(cb.window, cb.control);
+					}
 				}
 					break;
 				default:
@@ -41,7 +43,7 @@ namespace file_sorter {
 		}
 		window_t create_window(const std::string& title, size_t width, size_t height) {
 			window_t w = new _window_t;
-			w->window = CreateWindowA(class_name.c_str(), title.c_str(), WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, NULL, NULL);
+			w->window = CreateWindowA(class_name.c_str(), title.c_str(), WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, (int)width, (int)height, NULL, NULL, NULL, NULL);
 			return w;
 		}
 		void destroy_window(window_t window) {

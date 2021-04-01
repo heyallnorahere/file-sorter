@@ -5,6 +5,8 @@
 #include <deque>
 #include <map>
 #include <sstream>
+#include <fstream>
 #include <functional>
 #include <algorithm>
 #include <cassert>
+#include <memory>

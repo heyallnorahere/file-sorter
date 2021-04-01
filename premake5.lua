@@ -22,6 +22,22 @@ workspace "file-sorter"
             "SYSTEM_LINUX"
         }
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+group "dependencies"
+project "zip"
+    kind "StaticLib"
+    language "C"
+    staticruntime "on"
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    files {
+        "vendor/submodules/zip/src/zip.*"
+    }
+    filter "configurations:Debug"
+        symbols "on"
+    filter "configurations:Release"
+        optimize "on"
+group ""
+group "tools"
 project "file-sorter"
     location "file-sorter"
     kind "WindowedApp"
@@ -41,6 +57,12 @@ project "file-sorter"
         "%{prj.name}/platform",
         "%{prj.name}/src"
     }
+    sysincludedirs {
+        "vendor/submodules/zip/src"
+    }
+    links {
+        "zip"
+    }
     filter "action:not gmake*"
         pchheader "pch.h"
         pchsource "%{prj.name}/src/pch.cpp"
@@ -48,3 +70,4 @@ project "file-sorter"
         symbols "on"
     filter "configurations:Release"
         optimize "on"
+group ""

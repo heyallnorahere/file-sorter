@@ -5,6 +5,7 @@ namespace file_sorter {
 		enum class control_type {
 			label,
 			button,
+			text_input,
 		};
 		struct control_data {
 			control_type type;
@@ -20,5 +21,7 @@ namespace file_sorter {
 		};
 		control_t new_control(window_t parent, control_data* data);
 		void destroy_control(control_t control);
+		std::string get_control_text(control_t control);
+		void set_control_text(control_t control, const std::string& text);
 	}
 }
