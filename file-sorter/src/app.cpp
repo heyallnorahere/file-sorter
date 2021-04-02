@@ -2,6 +2,7 @@
 #include "app.h"
 #include "window.h"
 #include "control.h"
+#include "misc.h"
 namespace file_sorter {
 	app::app() {
 		platform::init_window();
@@ -34,8 +35,10 @@ namespace file_sorter {
 		btn_data.height = 25;
 		btn_data.text = "...";
 		btn_data.callback = [this](platform::window_t window, platform::control_t control) {
-			// todo: folder selection
-			platform::set_control_text(this->m_path_input, "path/to/folder");
+			std::string path = platform::open_folder_dialog(this->m_window);
+			if (!path.empty()) {
+				platform::set_control_text(this->m_path_input, path);
+			}
 		};
 		this->m_path_select = platform::new_control(this->m_window, &btn_data);
 		btn_data.x = 0;

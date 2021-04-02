@@ -63,6 +63,10 @@ project "file-sorter"
     links {
         "zip"
     }
+    filter "system:windows"
+        links {
+            "shlwapi.lib"
+        }
     filter "action:not gmake*"
         pchheader "pch.h"
         pchsource "%{prj.name}/src/pch.cpp"
