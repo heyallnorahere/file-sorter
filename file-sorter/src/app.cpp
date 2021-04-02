@@ -73,7 +73,7 @@ namespace file_sorter {
 		else {
 			local_name = path.substr(pos + 1);
 		}
-		pos = local_name.find_last_of('.');
+		pos = local_name.find_first_of('.');
 		if (pos == std::string::npos) {
 			return local_name;
 		}
@@ -100,7 +100,27 @@ namespace file_sorter {
 			groups[parsed_name]->add_file(filepath);
 		}
 		for (auto& g : groups) {
-			g.second->serialize(final_directory + g.first + ".zip");
+			std::vector<std::string> names = g.second->get_file_names();
+			if (names.size() <= 1) {
+				continue;
+			}
+			std::string extensions;
+			for (const auto& name : names) {
+				size_t pos = name.find_first_of('.');
+				auto append = [&](const std::string& text) {
+					if (extensions.length() > 0) {
+						extensions.push_back(',');
+					}
+					extensions.append(text);
+				};
+				if (pos == std::string::npos) {
+					append("none");
+				}
+				else {
+					append(name.substr(pos));
+				}
+			}
+			g.second->serialize(final_directory + g.first + " (" + extensions + ").zip");
 		}
 	}
 }
